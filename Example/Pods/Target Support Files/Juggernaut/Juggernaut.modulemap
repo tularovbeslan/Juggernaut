@@ -1,0 +1,6 @@
+framework module Juggernaut {
+  umbrella header "Juggernaut-umbrella.h"
+
+  export *
+  module * { export * }
+}

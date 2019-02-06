@@ -1,0 +1,16 @@
+PODS:
+  - Juggernaut (0.1.0)
+
+DEPENDENCIES:
+  - Juggernaut (from `../`)
+
+EXTERNAL SOURCES:
+  Juggernaut:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Juggernaut: 8cfc2128a35bc0c5126e72c1e8c0e0f4abbcc9a3
+
+PODFILE CHECKSUM: ddb776638d3dba9d62f2e3fdae6421b7cec01024
+
+COCOAPODS: 1.6.0.beta.2
