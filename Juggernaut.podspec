@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Juggernaut'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of Juggernaut.'
+  s.summary          = 'Download manager - Juggernaut'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,12 +25,12 @@ TODO: Add long description of the pod here.
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tularovbeslan@gmail.com' => 'tularovbeslan@gmail.com' }
-  s.source           = { :git => 'https://github.com/tularovbeslan@gmail.com/Juggernaut.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/tularovbeslan/Juggernaut.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'Juggernaut/Classes/**/*.swift'
+  s.source_files = 'Juggernaut/Classes/**/*'
   
   # s.resource_bundles = {
   #   'Juggernaut' => ['Juggernaut/Assets/*.png']
