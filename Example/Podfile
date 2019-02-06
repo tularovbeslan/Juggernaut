@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Juggernaut_Example' do
+  pod 'Juggernaut', :path => '../'
+
+  target 'Juggernaut_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
