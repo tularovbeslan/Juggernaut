@@ -44,7 +44,6 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 	fileprivate func backgroundSession(identifier: String, configuration: URLSessionConfiguration? = nil) -> URLSession {
 
 		let sessionConfiguration = configuration ?? Juggernaut.defaultSessionConfiguration(identifier: identifier)
-		assert(identifier == sessionConfiguration.identifier, "Configuration identifiers do not match")
 		let session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
 		return session
 	}
@@ -97,17 +96,16 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 		guard let data = resumeData, data.count > 0 else { return false }
 
 		do {
-			var resumeDictionary : AnyObject!
-			resumeDictionary = try PropertyListSerialization.propertyList(from: data, options: PropertyListSerialization.MutabilityOptions(), format: nil) as AnyObject
-			var localFilePath = (resumeDictionary?["NSURLSessionResumeInfoLocalPath"] as? String)
+			var resume : AnyObject!
+			resume = try PropertyListSerialization.propertyList(from: data, options: PropertyListSerialization.MutabilityOptions(), format: nil) as AnyObject
+			var localFilePath = (resume?["NSURLSessionResumeInfoLocalPath"] as? String)
 
 			guard let localPath = localFilePath, localPath.count < 1 else {
-				localFilePath = (NSTemporaryDirectory() as String) + (resumeDictionary["NSURLSessionResumeInfoTempFileName"] as! String)
+				localFilePath = (NSTemporaryDirectory() as String) + (resume["NSURLSessionResumeInfoTempFileName"] as! String)
 				return false
 			}
 
 			let fileManager : FileManager! = FileManager.default
-			debugPrint("resume data file exists: \(fileManager.fileExists(atPath: localFilePath! as String))")
 			return fileManager.fileExists(atPath: localFilePath! as String)
 		} catch let error as NSError {
 			debugPrint("resume data is nil: \(error)")
@@ -188,13 +186,10 @@ extension Juggernaut: URLSessionDownloadDelegate {
 				if fileManager.fileExists(atPath: path) {
 
 					let fileURL = URL(fileURLWithPath: destinationPath as String)
-					debugPrint("directory path = \(destinationPath)")
 					do {
-
 						try fileManager.moveItem(at: location, to: fileURL)
 					} catch let error as NSError {
 
-						debugPrint("Error while moving downloaded file to destination path:\(error)")
 						DispatchQueue.main.async(execute: { () -> Void in
 							self.delegate?.juggernaut!(self, didFail: item, forItemAt: index, with: error)
 						})
@@ -217,9 +212,10 @@ extension Juggernaut: URLSessionDownloadDelegate {
 		}
 	}
 
-	public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+	public func urlSession(_ session: URLSession,
+												 task: URLSessionTask,
+												 didCompleteWithError error: Error?) {
 
-		debugPrint("task id: \(task.taskIdentifier)")
 		DispatchQueue.main.async {
 
 			let err = error as NSError?
@@ -256,7 +252,9 @@ extension Juggernaut: URLSessionDownloadDelegate {
 				for(index, item) in self.items.enumerated() {
 
 					if task.isEqual(item.task) {
+
 						if err?.code == NSURLErrorCancelled || err == nil {
+
 							self.items.remove(at: index)
 
 							if err == nil {
@@ -266,8 +264,10 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							}
 
 						} else {
+
 							let resumeData = err?.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
 							var newTask = task
+
 							if self.isValidResumeData(resumeData) == true {
 								newTask = self.session.downloadTask(withResumeData: resumeData!)
 							} else {
@@ -283,7 +283,8 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							if let error = err {
 								self.delegate?.juggernaut?(self, didFail: item, forItemAt: index, with: error)
 							} else {
-								let error: NSError = NSError(domain: "MZDownloadManagerDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey : "Unknown error occurred"])
+
+								let error: NSError = NSError(domain: "JuggernautDownloadManagerDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey : "Unknown error occurred"])
 								self.delegate?.juggernaut?(self, didFail: item, forItemAt: index, with: error)
 							}
 						}
@@ -295,12 +296,12 @@ extension Juggernaut: URLSessionDownloadDelegate {
 	}
 
 	public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+
 		if let backgroundCompletion = self.backgroundSessionCompletionHandler {
 			DispatchQueue.main.async(execute: {
 				backgroundCompletion()
 			})
 		}
-		debugPrint("All tasks are finished")
 	}
 }
 
@@ -313,8 +314,6 @@ extension Juggernaut {
 		let task = session.downloadTask(with: request)
 		task.taskDescription = [name, url, path].joined(separator: ",")
 		task.resume()
-
-		debugPrint("session manager:\(String(describing: session)) url:\(String(describing: url)) request:\(String(describing: request))")
 
 		let item = JuggernautItem.init(name: name, url: url, path: path)
 		item.initialTime = Date()
@@ -330,7 +329,6 @@ extension Juggernaut {
 		let url = URL(string: fileURL)!
 		let request = URLRequest(url: url)
 		addDownloadTask(name, request: request, path: path)
-
 	}
 
 	@objc public func addDownloadTask(_ name: String, url: String) {
@@ -351,7 +349,6 @@ extension Juggernaut {
 		task!.suspend()
 		item.status = JuggernautItemStatus.paused.description()
 		item.initialTime = Date()
-
 		items[index] = item
 
 		delegate?.juggernaut?(self, didPaused: item, forItemAt: index)
@@ -366,7 +363,6 @@ extension Juggernaut {
 		let task = item.task
 		task!.resume()
 		item.status = JuggernautItemStatus.downloading.description()
-
 		items[index] = item
 
 		delegate?.juggernaut?(self, didResume: item, forItemAt: index)
@@ -385,16 +381,19 @@ extension Juggernaut {
 	}
 
 	@objc public func cancelTaskAtIndex(_ index: Int) {
+
 		let info = items[index]
 		let task = info.task
 		task!.cancel()
 	}
 
 	@objc public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
+
 		let application = UIApplication.shared
 		let applicationState = application.applicationState
 
 		if applicationState == UIApplication.State.background {
+			
 			let localNotification = UILocalNotification()
 			localNotification.alertBody = notifBody
 			localNotification.alertAction = notifAction
