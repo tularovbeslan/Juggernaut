@@ -117,12 +117,12 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 extension Juggernaut: URLSessionDownloadDelegate {
 
 	public func urlSession(_ session: URLSession,
-												 downloadTask: URLSessionDownloadTask,
-												 didWriteData bytesWritten: Int64,
-												 totalBytesWritten: Int64,
-												 totalBytesExpectedToWrite: Int64) {
+							 downloadTask: URLSessionDownloadTask,
+							 didWriteData bytesWritten: Int64,
+							 totalBytesWritten: Int64,
+							 totalBytesExpectedToWrite: Int64) {
 
-		for (index, item) in self.items.enumerated() {
+		for item in self.items {
 
 			if downloadTask.isEqual(item.task) {
 
@@ -136,11 +136,11 @@ extension Juggernaut: URLSessionDownloadDelegate {
 					let timeInterval = initialTime.timeIntervalSinceNow
 					let downloadTime = TimeInterval(-1 * timeInterval)
 
-					let speed = totalBytesWritten / Int64(downloadTime)
+					let speed = Float(totalBytesWritten) / Float(downloadTime)
 
 					let remainingContentLength = totalBytesExpectedToWrite - totalBytesWritten
 
-					let remainingTime = remainingContentLength / speed
+					let remainingTime = remainingContentLength / Int64(speed)
 					let hours = Int(remainingTime) / 3600
 					let minutes = (Int(remainingTime) - hours * 3600) / 60
 					let seconds = Int(remainingTime) - hours * 3600 - minutes * 60
@@ -164,7 +164,7 @@ extension Juggernaut: URLSessionDownloadDelegate {
 						self.items[objectIndex] = item
 					}
 
-					self.delegate?.juggernaut!(self, didUpdateProgress: item, forItemAt: index)
+					self.delegate?.juggernaut!(self, didUpdateProgress: item, forItemAt: item.indexPath)
 				})
 				break
 			}
@@ -175,7 +175,7 @@ extension Juggernaut: URLSessionDownloadDelegate {
 												 downloadTask: URLSessionDownloadTask,
 												 didFinishDownloadingTo location: URL) {
 
-		for (index, item) in items.enumerated() {
+		for item in items {
 
 			if downloadTask.isEqual(item.task) {
 
@@ -191,19 +191,17 @@ extension Juggernaut: URLSessionDownloadDelegate {
 					} catch let error as NSError {
 
 						DispatchQueue.main.async(execute: { () -> Void in
-							self.delegate?.juggernaut!(self, didFail: item, forItemAt: index, with: error)
+							self.delegate?.juggernaut!(self, didFail: item, forItemAt: item.indexPath, with: error)
 						})
 					}
 				} else {
 
-					if let _ = self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: index) {
-						self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: index)
+					if let _ = self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath) {
+						self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath)
 					} else {
 
-						let error = NSError(domain: "FolderDoesNotExist",
-																code: 404,
-																userInfo: [NSLocalizedDescriptionKey : "Destination folder does not exists"])
-						self.delegate?.juggernaut?(self, didFail: item, forItemAt: index, with: error)
+						let error = NSError(domain: "FolderDoesNotExist", code: 404, userInfo: [NSLocalizedDescriptionKey : "Destination folder does not exists"])
+						self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
 					}
 				}
 
@@ -258,9 +256,9 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items.remove(at: index)
 
 							if err == nil {
-								self.delegate?.juggernaut?(self, didFinish: item, forItemAt: index)
+								self.delegate?.juggernaut?(self, didFinish: item, forItemAt: item.indexPath)
 							} else {
-								self.delegate?.juggernaut?(self, didCancel: item, forItemAt: index)
+								self.delegate?.juggernaut?(self, didCancel: item, forItemAt: item.indexPath)
 							}
 
 						} else {
@@ -281,11 +279,11 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items[index] = item
 
 							if let error = err {
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: index, with: error)
+								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
 							} else {
 
 								let error: NSError = NSError(domain: "JuggernautDownloadManagerDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey : "Unknown error occurred"])
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: index, with: error)
+								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
 							}
 						}
 						break;
@@ -307,7 +305,7 @@ extension Juggernaut: URLSessionDownloadDelegate {
 
 extension Juggernaut {
 
-	@objc public func addDownloadTask(_ name: String, request: URLRequest, path: String) {
+	public func addDownloadTask(_ name: String, request: URLRequest, path: String, indexPath: IndexPath) {
 
 		let url = request.url!.absoluteString
 
@@ -319,27 +317,26 @@ extension Juggernaut {
 		item.initialTime = Date()
 		item.status = JuggernautItemStatus.downloading.description()
 		item.task = task
-
+		item.indexPath = indexPath
 		items.append(item)
-		delegate?.juggernaut?(self, didStart: item, forItemAt: items.count - 1)
+		delegate?.juggernaut?(self, didStart: item, forItemAt: item.indexPath)
 	}
 
-	@objc public func addDownloadTask(_ name: String, fileURL: String, path: String) {
+	public func addDownloadTask(_ name: String, fileURL url: URL, path: String, indexPath: IndexPath) {
 
-		let url = URL(string: fileURL)!
 		let request = URLRequest(url: url)
-		addDownloadTask(name, request: request, path: path)
+		addDownloadTask(name, request: request, path: path, indexPath: indexPath)
 	}
 
-	@objc public func addDownloadTask(_ name: String, url: String) {
-		addDownloadTask(name, fileURL: url, path: "")
+	public func addDownloadTask(_ name: String, url: URL, indexPath: IndexPath) {
+		addDownloadTask(name, fileURL: url, path: "", indexPath: indexPath)
 	}
 
-	@objc public func addDownloadTask(_ name: String, request: URLRequest) {
-		addDownloadTask(name, request: request, path: "")
+	public func addDownloadTask(_ name: String, request: URLRequest, indexPath: IndexPath) {
+		addDownloadTask(name, request: request, path: "", indexPath: indexPath)
 	}
 
-	@objc public func pauseDownloadTaskAtIndex(_ index: Int) {
+	public func pauseDownloadTaskAtIndex(_ index: Int) {
 
 		let item = items[index]
 
@@ -351,10 +348,10 @@ extension Juggernaut {
 		item.initialTime = Date()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didPaused: item, forItemAt: index)
+		delegate?.juggernaut?(self, didPaused: item, forItemAt: item.indexPath)
 	}
 
-	@objc public func resumeDownloadTaskAtIndex(_ index: Int) {
+	public func resumeDownloadTaskAtIndex(_ index: Int) {
 
 		let item = items[index]
 
@@ -365,10 +362,10 @@ extension Juggernaut {
 		item.status = JuggernautItemStatus.downloading.description()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didResume: item, forItemAt: index)
+		delegate?.juggernaut?(self, didResume: item, forItemAt: item.indexPath)
 	}
 
-	@objc public func retryDownloadTaskAtIndex(_ index: Int) {
+	public func retryDownloadTaskAtIndex(_ index: Int) {
 
 		let item = items[index]
 		guard item.status != JuggernautItemStatus.downloading.description() else { return }
@@ -380,14 +377,14 @@ extension Juggernaut {
 		items[index] = item
 	}
 
-	@objc public func cancelTaskAtIndex(_ index: Int) {
+	public func cancelTaskAtIndex(_ index: Int) {
 
 		let info = items[index]
 		let task = info.task
 		task!.cancel()
 	}
 
-	@objc public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
+	public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
 
 		let application = UIApplication.shared
 		let applicationState = application.applicationState
@@ -400,6 +397,7 @@ extension Juggernaut {
 			localNotification.soundName = UILocalNotificationDefaultSoundName
 			localNotification.applicationIconBadgeNumber += 1
 			application.presentLocalNotificationNow(localNotification)
+			
 		}
 	}
 }

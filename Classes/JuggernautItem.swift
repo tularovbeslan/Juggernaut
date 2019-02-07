@@ -45,6 +45,8 @@ open class JuggernautItem: NSObject {
 
 	open var url: String!
 
+	open var indexPath: IndexPath!
+
 	open var status: String = JuggernautItemStatus.gettingInfo.description()
 
 	open var file: (size: Float, unit: String)?

@@ -5,7 +5,7 @@
 
 import Foundation
 
-extension Notification {
+extension NSNotification.Name {
 
-	static let JuggernautDidFinishedDownloading = Notification.Name("JuggernautDidFinishedDownloading")
+	public static let JuggernautDidFinishedDownloading = NSNotification.Name("JuggernautDidFinishedDownloading")
 }
