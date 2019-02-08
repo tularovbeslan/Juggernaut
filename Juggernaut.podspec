@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tularovbeslan@gmail.com' => 'tularovbeslan@gmail.com' }
   s.source           = { :git => 'https://github.com/tularovbeslan/Juggernaut.git', :tag => s.version.to_s }
-	s.social_media_url = 'https://twitter.com/JiromTomson'
-
+  s.social_media_url = 'https://twitter.com/JiromTomson'
+  s.swift_version = '4.2'
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'Classes/**/*'
