@@ -148,8 +148,6 @@ extension ItemsViewController: JuggernautDelegate {
 
 	func juggernaut(_ juggernaut: Juggernaut, didFinish item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
-		juggernaut.presentNotificationForDownload("Ok", notifBody: "Download did completed")
-
 		let docDirectoryPath = fileManager.documentDirectory() + item.name
 
 		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFinishedDownloading, object: docDirectoryPath)

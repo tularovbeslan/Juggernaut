@@ -383,21 +383,4 @@ extension Juggernaut {
 		let task = info.task
 		task!.cancel()
 	}
-
-	public func presentNotificationForDownload(_ notifAction: String, notifBody: String) {
-
-		let application = UIApplication.shared
-		let applicationState = application.applicationState
-
-		if applicationState == UIApplication.State.background {
-			
-			let localNotification = UILocalNotification()
-			localNotification.alertBody = notifBody
-			localNotification.alertAction = notifAction
-			localNotification.soundName = UILocalNotificationDefaultSoundName
-			localNotification.applicationIconBadgeNumber += 1
-			application.presentLocalNotificationNow(localNotification)
-			
-		}
-	}
 }
