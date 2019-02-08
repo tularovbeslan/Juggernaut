@@ -5,6 +5,17 @@
 [![License](https://img.shields.io/cocoapods/l/Juggernaut.svg?style=flat)](https://cocoapods.org/pods/Juggernaut)
 [![Platform](https://img.shields.io/cocoapods/p/Juggernaut.svg?style=flat)](https://cocoapods.org/pods/Juggernaut)
 
+# Features
+
+Download manager
+
++ Running in the background
++ Loading multiple files
++ You can cancel, pause, resume, reload
+
+# Example
+
+![giff](https://user-images.githubusercontent.com/4906243/52477904-a262c380-2bb4-11e9-936f-a854f8572d05.gif)
 
 # UML Class Diagram 
 

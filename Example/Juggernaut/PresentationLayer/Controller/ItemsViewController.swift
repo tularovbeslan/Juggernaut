@@ -21,7 +21,7 @@ class ItemsViewController: UIViewController {
 	var network: Network!
 	var items: [Item] = []
 	var fileManager: FileManager!
-	var downloadManager: Juggernaut!
+	var juggernaut: Juggernaut!
 
 	// MARK: - Life cycle
 
@@ -33,7 +33,7 @@ class ItemsViewController: UIViewController {
 		let appDelegate = UIApplication.shared.delegate as! AppDelegate
 		let completion = appDelegate.backgroundSessionCompletionHandler
 
-		downloadManager = Juggernaut(session: sessionIdentifer, delegate: self, completion: completion)
+		juggernaut = Juggernaut(session: sessionIdentifer, delegate: self, completion: completion)
 
 		title = "Juggernaut"
 		fileManager = FileManager.default
@@ -106,7 +106,7 @@ extension ItemsViewController: UITableViewDelegate {
 		guard let url = URL(string: item.url) else { return }
 		let name = fileManager.uniqueName(url)
 		let path = fileManager.documentDirectory() + "/My Files"
-		downloadManager.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath)
+		juggernaut.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath)
 	}
 }
 
@@ -148,7 +148,7 @@ extension ItemsViewController: JuggernautDelegate {
 
 	func juggernaut(_ juggernaut: Juggernaut, didFinish item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
-		downloadManager.presentNotificationForDownload("Ok", notifBody: "Download did completed")
+		juggernaut.presentNotificationForDownload("Ok", notifBody: "Download did completed")
 
 		let docDirectoryPath = fileManager.documentDirectory() + item.name
 
