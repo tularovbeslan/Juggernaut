@@ -10,11 +10,11 @@
 
 * General scheme
 
-<img width="733" alt="2019-02-07 2 09 36" src="https://user-images.githubusercontent.com/4906243/52380240-15b5e980-2a7e-11e9-8121-ce4becc3f554.png">
+<img width="588" alt="2019-02-08 14 41 42" src="https://user-images.githubusercontent.com/4906243/52476469-c66fd600-2baf-11e9-828e-15373cdc9e7b.png">
 
 * Delegates
 
-<img width="545" alt="2019-02-07 2 11 07" src="https://user-images.githubusercontent.com/4906243/52380322-62012980-2a7e-11e9-9193-5e692a69b44e.png">
+<img width="766" alt="2019-02-08 14 41 14" src="https://user-images.githubusercontent.com/4906243/52476498-dc7d9680-2baf-11e9-9e3a-e2fc58251115.png">
 
 * Entity
 
