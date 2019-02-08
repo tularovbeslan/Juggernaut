@@ -109,3 +109,8 @@ extension FileManager {
 		case Bytes
 	}
 }
+
+extension NSNotification.Name {
+
+	public static let JuggernautDidFinishedDownloading = NSNotification.Name("JuggernautDidFinishedDownloading")
+}
