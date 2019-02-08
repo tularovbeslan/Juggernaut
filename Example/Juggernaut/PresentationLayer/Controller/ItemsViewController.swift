@@ -2,9 +2,6 @@
 //  ViewController.swift
 //  Juggernaut
 //
-//  Created by tularovbeslan@gmail.com on 02/06/2019.
-//  Copyright (c) 2019 tularovbeslan@gmail.com. All rights reserved.
-//
 
 import UIKit
 import Juggernaut
@@ -96,7 +93,7 @@ extension ItemsViewController: UITableViewDataSource {
 extension ItemsViewController: UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return UITableViewAutomaticDimension
+		return UITableView.automaticDimension
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

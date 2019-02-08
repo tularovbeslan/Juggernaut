@@ -2,9 +2,6 @@
 //  FileManagerTests.swift
 //  Juggernaut_Tests
 //
-//  Created by workmachine on 08/02/2019.
-//  Copyright © 2019 CocoaPods. All rights reserved.
-//
 
 import XCTest
 import Foundation
