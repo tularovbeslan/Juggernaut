@@ -63,6 +63,7 @@ extension FileManager {
 	}
 
 	public func freeDiskspace() -> NSNumber? {
+
 		let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
 		let systemAttributes: AnyObject?
 		do {
@@ -76,6 +77,7 @@ extension FileManager {
 	}
 
 	public func size(_ length : Int64) -> Float {
+
 		let data = Float64(length)
 		if data >= gigabytes {
 			return Float(data / gigabytes)
@@ -89,6 +91,7 @@ extension FileManager {
 	}
 
 	public func unit(_ length : Int64) -> String {
+
 		let data = Float64(length)
 		if data >= gigabytes {
 			return Unit.GB.rawValue
@@ -112,5 +115,12 @@ extension FileManager {
 
 extension NSNotification.Name {
 
-	public static let JuggernautDidFinishedDownloading = NSNotification.Name("JuggernautDidFinishedDownloading")
+	public static let JuggernautDidStart 			= NSNotification.Name("JuggernautDidStart")
+	public static let JuggernautDidPaused 			= NSNotification.Name("JuggernautDidPaused")
+	public static let JuggernautDidResume 			= NSNotification.Name("JuggernautDidResume")
+	public static let JuggernautDidRetry 			= NSNotification.Name("JuggernautDidRetry")
+	public static let JuggernautDidCancel 			= NSNotification.Name("JuggernautDidCancel")
+	public static let JuggernautDidFinish 			= NSNotification.Name("JuggernautDidFinish")
+	public static let JuggernautDidFail 			= NSNotification.Name("JuggernautDidFail")
+	public static let JuggernautDidUpdateProgress 	= NSNotification.Name("JuggernautDidUpdateProgress")
 }

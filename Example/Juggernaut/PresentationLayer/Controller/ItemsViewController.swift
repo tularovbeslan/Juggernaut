@@ -26,7 +26,6 @@ class ItemsViewController: UIViewController {
         super.viewDidLoad()
 
 		let sessionIdentifer: String = "com.InStat.Juggernaut.BackgroundSession"
-
 		let appDelegate = UIApplication.shared.delegate as! AppDelegate
 		let completion = appDelegate.backgroundSessionCompletionHandler
 
@@ -81,6 +80,7 @@ extension ItemsViewController: UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
 		let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ItemCell.self), for: indexPath) as! ItemCell
 		let item = items[indexPath.row]
 		cell.setup(item)
@@ -112,7 +112,7 @@ extension ItemsViewController: UITableViewDelegate {
 extension ItemsViewController: JuggernautDelegate {
 
 	func juggernaut(_ juggernaut: Juggernaut, didStart item: JuggernautItem, forItemAt indexPath: IndexPath) {
-		print("didStart")
+		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidStart, object: item)
 	}
 
 	func juggernaut(_ juggernaut: Juggernaut, didPopulatedInterruptedTasks items: [JuggernautItem]) {
@@ -125,36 +125,42 @@ extension ItemsViewController: JuggernautDelegate {
 	func juggernaut(_ juggernaut: Juggernaut, didUpdateProgress item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
 		DispatchQueue.main.async {
+
 			self.refresh(item, atIndexPath: indexPath)
+			NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidUpdateProgress, object: item)
 		}
 	}
 
 	func juggernaut(_ juggernaut: Juggernaut, didPaused item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
 		DispatchQueue.main.async {
+
 			self.refresh(item, atIndexPath: indexPath)
+			NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidPaused, object: item)
 		}
 	}
 
 	func juggernaut(_ juggernaut: Juggernaut, didResume item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
 		DispatchQueue.main.async {
+
 			self.refresh(item, atIndexPath: indexPath)
+			NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidResume, object: item)
 		}
 	}
 
 	func juggernaut(_ juggernaut: Juggernaut, didFinish item: JuggernautItem, forItemAt indexPath: IndexPath) {
 
 		let docDirectoryPath = fileManager.documentDirectory() + item.name
-
-		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFinishedDownloading, object: docDirectoryPath)
+		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFinish, object: docDirectoryPath)
 	}
 
 	func juggernaut(_ juggernaut: Juggernaut, didFail item: JuggernautItem, forItemAt indexPath: IndexPath, with error: NSError) {
 
 		DispatchQueue.main.async {
+
 			self.refresh(item, atIndexPath: indexPath)
+			NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFail, object: item)
 		}
 	}
-
 }
