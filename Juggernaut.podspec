@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Juggernaut'
-  s.version          = '1.1.2'
+  s.version          = '1.1.3'
   s.summary          = 'Download manager - Juggernaut'
 
   s.description      = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.swift_version = '4.2'
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'Juggernaut/Classes/**/*'
   
   # s.resource_bundles = {
   #   'Juggernaut' => ['Juggernaut/Assets/*.png']

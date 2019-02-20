@@ -10,10 +10,10 @@
 		3C3B28BB01E0FCC2876980DCB7BB6491 /* Juggernaut-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FD0BCA57D977D399C098DBDBA754A61 /* Juggernaut-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		455D015D6A6CA9E4CA3D68CBA92AD708 /* Pods-Juggernaut_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B00C6CCD3E2C6458BFEC4FAEBB3B7B /* Pods-Juggernaut_Example-dummy.m */; };
 		4C08714589B03D16833FD38179BA3300 /* Pods-Juggernaut_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B2E25688EF05059577FB41E2FE00BF4 /* Pods-Juggernaut_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		579E5FD3220B8578009A4F9D /* JuggernautItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579E5FD2220B8578009A4F9D /* JuggernautItem.swift */; };
-		579E5FD5220B85B8009A4F9D /* Juggernaut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579E5FD4220B85B8009A4F9D /* Juggernaut.swift */; };
-		579E5FD7220B85D6009A4F9D /* JuggernautDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579E5FD6220B85D6009A4F9D /* JuggernautDelegate.swift */; };
-		579E5FD9220B85EF009A4F9D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579E5FD8220B85EF009A4F9D /* Extensions.swift */; };
+		577D60DB221CE12C00ED9642 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D60D7221CE12C00ED9642 /* Extensions.swift */; };
+		577D60DC221CE12C00ED9642 /* JuggernautItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D60D8221CE12C00ED9642 /* JuggernautItem.swift */; };
+		577D60DD221CE12C00ED9642 /* Juggernaut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D60D9221CE12C00ED9642 /* Juggernaut.swift */; };
+		577D60DE221CE12C00ED9642 /* JuggernautDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577D60DA221CE12C00ED9642 /* JuggernautDelegate.swift */; };
 		7769C5E850A1C6AD4E7DBBA37712F293 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6DFF15000AFE2A371BF499E7AFDA808 /* Foundation.framework */; };
 		79B240F60AAC25104D0F28A4EFC35AA1 /* Pods-Juggernaut_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EE15B8A181D220CCCB5E8339ECFAEB6F /* Pods-Juggernaut_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		87F89B889A439F4FF6FE4302CC15C620 /* Juggernaut-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 66629D9FF2455F3E06EB21E313FB5F05 /* Juggernaut-dummy.m */; };
@@ -50,10 +50,10 @@
 		503A1D046C007C267EC16261FCA40EF6 /* Pods-Juggernaut_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Juggernaut_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		503C368E496EDD09642347C3829020C6 /* Pods-Juggernaut_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Juggernaut_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		53C4DF179CF72405A29A440BC7A99BD0 /* Juggernaut.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Juggernaut.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		579E5FD2220B8578009A4F9D /* JuggernautItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuggernautItem.swift; sourceTree = "<group>"; };
-		579E5FD4220B85B8009A4F9D /* Juggernaut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Juggernaut.swift; sourceTree = "<group>"; };
-		579E5FD6220B85D6009A4F9D /* JuggernautDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuggernautDelegate.swift; sourceTree = "<group>"; };
-		579E5FD8220B85EF009A4F9D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		577D60D7221CE12C00ED9642 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		577D60D8221CE12C00ED9642 /* JuggernautItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JuggernautItem.swift; sourceTree = "<group>"; };
+		577D60D9221CE12C00ED9642 /* Juggernaut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Juggernaut.swift; sourceTree = "<group>"; };
+		577D60DA221CE12C00ED9642 /* JuggernautDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JuggernautDelegate.swift; sourceTree = "<group>"; };
 		66629D9FF2455F3E06EB21E313FB5F05 /* Juggernaut-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Juggernaut-dummy.m"; sourceTree = "<group>"; };
 		727338656CFBC15B9B393A53F500F474 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		737DD89EF5316E514BB7A3C5E1D21B82 /* Pods-Juggernaut_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Juggernaut_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -154,12 +154,13 @@
 		579E5FD0220B8558009A4F9D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				579E5FD8220B85EF009A4F9D /* Extensions.swift */,
-				579E5FD4220B85B8009A4F9D /* Juggernaut.swift */,
-				579E5FD6220B85D6009A4F9D /* JuggernautDelegate.swift */,
-				579E5FD2220B8578009A4F9D /* JuggernautItem.swift */,
+				577D60D7221CE12C00ED9642 /* Extensions.swift */,
+				577D60D9221CE12C00ED9642 /* Juggernaut.swift */,
+				577D60DA221CE12C00ED9642 /* JuggernautDelegate.swift */,
+				577D60D8221CE12C00ED9642 /* JuggernautItem.swift */,
 			);
-			path = Classes;
+			name = Classes;
+			path = Juggernaut/Classes;
 			sourceTree = "<group>";
 		};
 		74B2DB215BD53DBF1CC0B02F8AD25CCF /* Targets Support Files */ = {
@@ -389,10 +390,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				87F89B889A439F4FF6FE4302CC15C620 /* Juggernaut-dummy.m in Sources */,
-				579E5FD9220B85EF009A4F9D /* Extensions.swift in Sources */,
-				579E5FD7220B85D6009A4F9D /* JuggernautDelegate.swift in Sources */,
-				579E5FD3220B8578009A4F9D /* JuggernautItem.swift in Sources */,
-				579E5FD5220B85B8009A4F9D /* Juggernaut.swift in Sources */,
+				577D60DB221CE12C00ED9642 /* Extensions.swift in Sources */,
+				577D60DE221CE12C00ED9642 /* JuggernautDelegate.swift in Sources */,
+				577D60DC221CE12C00ED9642 /* JuggernautItem.swift in Sources */,
+				577D60DD221CE12C00ED9642 /* Juggernaut.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +625,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DD025EFA216BDBA68FD90E4299B598F /* Juggernaut.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -659,6 +661,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2DD025EFA216BDBA68FD90E4299B598F /* Juggernaut.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -682,6 +685,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
