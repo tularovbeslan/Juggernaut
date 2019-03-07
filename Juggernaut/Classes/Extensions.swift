@@ -124,5 +124,13 @@ extension FileManager {
 
 extension NSNotification.Name {
 
-	public static let JuggernautDidFinishedDownloading = NSNotification.Name("JuggernautDidFinishedDownloading")
+	public static let JuggernautDidStart 				= NSNotification.Name("JuggernautDidStart")
+	public static let JuggernautDidPaused 				= NSNotification.Name("JuggernautDidPaused")
+	public static let JuggernautDidResume 				= NSNotification.Name("JuggernautDidResume")
+	public static let JuggernautDidRetry 				= NSNotification.Name("JuggernautDidRetry")
+	public static let JuggernautDidCancel 				= NSNotification.Name("JuggernautDidCancel")
+	public static let JuggernautDidFinish 				= NSNotification.Name("JuggernautDidFinish")
+	public static let JuggernautDidFail 				= NSNotification.Name("JuggernautDidFail")
+	public static let JuggernautDidUpdateProgress		= NSNotification.Name("JuggernautDidUpdateProgress")
+	public static let JuggernautDidFinishedDownloading 	= NSNotification.Name("JuggernautDidFinishedDownloading")
 }
