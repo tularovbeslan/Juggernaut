@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Juggernaut'
-  s.version          = '1.1.3'
+  s.version          = '1.1.4'
   s.summary          = 'Download manager - Juggernaut'
 
   s.description      = <<-DESC

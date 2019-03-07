@@ -25,23 +25,35 @@ extension FileManager {
 		return path
 	}
 
+	public func customDirectory(_ named: String) -> String {
+
+		let path = documentDirectory() + "/" + named + "/"
+		do {
+			try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil)
+		} catch let error as NSError {
+			print(error.localizedDescription);
+		}
+		return path
+	}
+
 	public func uniqueName(_ url: URL) -> String {
 
+		let uuid = NSUUID().uuidString
 		var number: Int = 0
 		var isUnique: Bool = false
 		let ext = url.pathExtension
 		let fullPath = url.deletingPathExtension()
 		let name = fullPath.lastPathComponent
-		var newName = name
+		var newName = uuid + "|" + name
 
 		repeat {
 
 			var path: String
 
 			if ext.count > 0 {
-				path = "\(documentDirectory())/\(newName).\(ext)"
+				path = "\(newName).\(ext)"
 			} else {
-				path = "\(documentDirectory())/\(newName)"
+				path = "\(newName)"
 			}
 
 			let isAlreadyExists: Bool = FileManager.default.fileExists(atPath: path)
@@ -63,7 +75,6 @@ extension FileManager {
 	}
 
 	public func freeDiskspace() -> NSNumber? {
-
 		let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
 		let systemAttributes: AnyObject?
 		do {
@@ -77,7 +88,6 @@ extension FileManager {
 	}
 
 	public func size(_ length : Int64) -> Float {
-
 		let data = Float64(length)
 		if data >= gigabytes {
 			return Float(data / gigabytes)
@@ -91,7 +101,6 @@ extension FileManager {
 	}
 
 	public func unit(_ length : Int64) -> String {
-
 		let data = Float64(length)
 		if data >= gigabytes {
 			return Unit.GB.rawValue
@@ -115,12 +124,5 @@ extension FileManager {
 
 extension NSNotification.Name {
 
-	public static let JuggernautDidStart 			= NSNotification.Name("JuggernautDidStart")
-	public static let JuggernautDidPaused 			= NSNotification.Name("JuggernautDidPaused")
-	public static let JuggernautDidResume 			= NSNotification.Name("JuggernautDidResume")
-	public static let JuggernautDidRetry 			= NSNotification.Name("JuggernautDidRetry")
-	public static let JuggernautDidCancel 			= NSNotification.Name("JuggernautDidCancel")
-	public static let JuggernautDidFinish 			= NSNotification.Name("JuggernautDidFinish")
-	public static let JuggernautDidFail 			= NSNotification.Name("JuggernautDidFail")
-	public static let JuggernautDidUpdateProgress 	= NSNotification.Name("JuggernautDidUpdateProgress")
+	public static let JuggernautDidFinishedDownloading = NSNotification.Name("JuggernautDidFinishedDownloading")
 }
