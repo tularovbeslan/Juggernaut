@@ -53,6 +53,8 @@ open class JuggernautItem: NSObject {
 
 	open var downloadedFile: (size: Float, unit: String)?
 
+	open var objects: [Any]?
+
 	fileprivate(set) open var path: String = String()
 
 	fileprivate convenience init(name: String, url: String) {

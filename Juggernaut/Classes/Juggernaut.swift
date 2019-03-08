@@ -20,14 +20,14 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 
 	fileprivate let destinationIndex = 2
 
-	fileprivate weak var delegate: JuggernautDelegate?
+	public weak var delegate: JuggernautDelegate?
 
 	open var items: [JuggernautItem] = []
 
 	public convenience init(session sessionIdentifer: String,
-													delegate: JuggernautDelegate,
-													sessionConfiguration: URLSessionConfiguration? = nil,
-													completion: (() -> Void)? = nil) {
+							delegate: JuggernautDelegate? = nil,
+							sessionConfiguration: URLSessionConfiguration? = nil,
+							completion: (() -> Void)? = nil) {
 
 		self.init()
 		self.delegate = delegate
@@ -44,7 +44,7 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 	fileprivate func backgroundSession(identifier: String, configuration: URLSessionConfiguration? = nil) -> URLSession {
 
 		let sessionConfiguration = configuration ?? Juggernaut.defaultSessionConfiguration(identifier: identifier)
-		let session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+		let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
 		return session
 	}
 
@@ -117,10 +117,10 @@ public class Juggernaut: NSObject, JuggernautDelegate {
 extension Juggernaut: URLSessionDownloadDelegate {
 
 	public func urlSession(_ session: URLSession,
-							 downloadTask: URLSessionDownloadTask,
-							 didWriteData bytesWritten: Int64,
-							 totalBytesWritten: Int64,
-							 totalBytesExpectedToWrite: Int64) {
+						   downloadTask: URLSessionDownloadTask,
+						   didWriteData bytesWritten: Int64,
+						   totalBytesWritten: Int64,
+						   totalBytesExpectedToWrite: Int64) {
 
 		for item in self.items {
 
@@ -164,7 +164,7 @@ extension Juggernaut: URLSessionDownloadDelegate {
 						self.items[objectIndex] = item
 					}
 
-					self.delegate?.juggernaut!(self, didUpdateProgress: item, forItemAt: item.indexPath)
+					self.delegate?.juggernaut?(self, didUpdateProgress: item, forItemAt: item.indexPath, objects: item.objects)
 				})
 				break
 			}
@@ -172,8 +172,8 @@ extension Juggernaut: URLSessionDownloadDelegate {
 	}
 
 	public func urlSession(_ session: URLSession,
-												 downloadTask: URLSessionDownloadTask,
-												 didFinishDownloadingTo location: URL) {
+						   downloadTask: URLSessionDownloadTask,
+						   didFinishDownloadingTo location: URL) {
 
 		for item in items {
 
@@ -191,17 +191,17 @@ extension Juggernaut: URLSessionDownloadDelegate {
 					} catch let error as NSError {
 
 						DispatchQueue.main.async(execute: { () -> Void in
-							self.delegate?.juggernaut!(self, didFail: item, forItemAt: item.indexPath, with: error)
+							self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
 						})
 					}
 				} else {
 
-					if let _ = self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath) {
-						self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath)
+					if let _ = self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath, objects: item.objects) {
+						self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath, objects: item.objects)
 					} else {
 
 						let error = NSError(domain: "FolderDoesNotExist", code: 404, userInfo: [NSLocalizedDescriptionKey : "Destination folder does not exists"])
-						self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
+						self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
 					}
 				}
 
@@ -211,8 +211,8 @@ extension Juggernaut: URLSessionDownloadDelegate {
 	}
 
 	public func urlSession(_ session: URLSession,
-												 task: URLSessionTask,
-												 didCompleteWithError error: Error?) {
+						   task: URLSessionTask,
+						   didCompleteWithError error: Error?) {
 
 		DispatchQueue.main.async {
 
@@ -256,9 +256,9 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items.remove(at: index)
 
 							if err == nil {
-								self.delegate?.juggernaut?(self, didFinish: item, forItemAt: item.indexPath)
+								self.delegate?.juggernaut?(self, didFinish: item, forItemAt: item.indexPath, objects: item.objects)
 							} else {
-								self.delegate?.juggernaut?(self, didCancel: item, forItemAt: item.indexPath)
+								self.delegate?.juggernaut?(self, didCancel: item, forItemAt: item.indexPath, objects: item.objects)
 							}
 
 						} else {
@@ -279,11 +279,11 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items[index] = item
 
 							if let error = err {
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
+								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
 							} else {
 
 								let error: NSError = NSError(domain: "JuggernautDownloadManagerDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey : "Unknown error occurred"])
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error)
+								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
 							}
 						}
 						break;
@@ -305,7 +305,7 @@ extension Juggernaut: URLSessionDownloadDelegate {
 
 extension Juggernaut {
 
-	public func addDownloadTask(_ name: String, request: URLRequest, path: String, indexPath: IndexPath) {
+	public func addDownloadTask(_ name: String, request: URLRequest, path: String, indexPath: IndexPath, objects: [Any]? = nil) {
 
 		let url = request.url!.absoluteString
 
@@ -314,26 +314,27 @@ extension Juggernaut {
 		task.resume()
 
 		let item = JuggernautItem.init(name: name, url: url, path: path)
+		item.indexPath = indexPath
 		item.initialTime = Date()
 		item.status = JuggernautItemStatus.downloading.description()
 		item.task = task
-		item.indexPath = indexPath
+		item.objects = objects
 		items.append(item)
-		delegate?.juggernaut?(self, didStart: item, forItemAt: item.indexPath)
+		delegate?.juggernaut?(self, didStart: item, forItemAt: item.indexPath, objects: item.objects)
 	}
 
-	public func addDownloadTask(_ name: String, fileURL url: URL, path: String, indexPath: IndexPath) {
+	public func addDownloadTask(_ name: String, fileURL url: URL, path: String, indexPath: IndexPath, objects: [Any]? = nil) {
 
 		let request = URLRequest(url: url)
-		addDownloadTask(name, request: request, path: path, indexPath: indexPath)
+		addDownloadTask(name, request: request, path: path, indexPath: indexPath, objects: objects)
 	}
 
-	public func addDownloadTask(_ name: String, url: URL, indexPath: IndexPath) {
-		addDownloadTask(name, fileURL: url, path: "", indexPath: indexPath)
+	public func addDownloadTask(_ name: String, url: URL, indexPath: IndexPath, objects: [Any]? = nil) {
+		addDownloadTask(name, fileURL: url, path: "", indexPath: indexPath, objects: objects)
 	}
 
-	public func addDownloadTask(_ name: String, request: URLRequest, indexPath: IndexPath) {
-		addDownloadTask(name, request: request, path: "", indexPath: indexPath)
+	public func addDownloadTask(_ name: String, request: URLRequest, indexPath: IndexPath, objects: [Any]? = nil) {
+		addDownloadTask(name, request: request, path: "", indexPath: indexPath, objects: objects)
 	}
 
 	public func pauseDownloadTaskAtIndex(_ index: Int) {
@@ -348,7 +349,7 @@ extension Juggernaut {
 		item.initialTime = Date()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didPaused: item, forItemAt: item.indexPath)
+		delegate?.juggernaut?(self, didPaused: item, forItemAt: item.indexPath, objects: item.objects)
 	}
 
 	public func resumeDownloadTaskAtIndex(_ index: Int) {
@@ -362,7 +363,7 @@ extension Juggernaut {
 		item.status = JuggernautItemStatus.downloading.description()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didResume: item, forItemAt: item.indexPath)
+		delegate?.juggernaut?(self, didResume: item, forItemAt: item.indexPath, objects: item.objects)
 	}
 
 	public func retryDownloadTaskAtIndex(_ index: Int) {

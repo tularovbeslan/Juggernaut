@@ -22,14 +22,11 @@ class ItemsViewController: UIViewController {
 
 	// MARK: - Life cycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-		let sessionIdentifer: String = "com.InStat.Juggernaut.BackgroundSession"
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		let completion = appDelegate.backgroundSessionCompletionHandler
-
-		juggernaut = Juggernaut(session: sessionIdentifer, delegate: self, completion: completion)
+		juggernaut = AppDelegate.shared.juggernaut
+		juggernaut.delegate = self
 
 		title = "Juggernaut"
 		fileManager = FileManager.default
@@ -37,7 +34,7 @@ class ItemsViewController: UIViewController {
 		network = NetworkImp()
 		guard let url = URL(string: "https://gist.githubusercontent.com/tularovbeslan/96657a7b5f8f9d0fb34c6832e99e330f/raw/accecf19049728102a2d7c0e8c3fc6fde1f499c6/JSON%2520for%2520downloader") else { return }
 		loadItems(url)
-    }
+	}
 
 	// MARK: - Helpers
 
@@ -103,7 +100,7 @@ extension ItemsViewController: UITableViewDelegate {
 		guard let url = URL(string: item.url) else { return }
 		let name = fileManager.uniqueName(url)
 		let path = fileManager.documentDirectory() + "/My Files"
-		juggernaut.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath)
+		juggernaut.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath, objects: nil)
 	}
 }
 
@@ -111,18 +108,18 @@ extension ItemsViewController: UITableViewDelegate {
 
 extension ItemsViewController: JuggernautDelegate {
 
-	func juggernaut(_ juggernaut: Juggernaut, didStart item: JuggernautItem, forItemAt indexPath: IndexPath) {
+	func juggernaut(_ juggernaut: Juggernaut, didStart item: JuggernautItem, forItemAt indexPath: IndexPath, objects: [Any]?) {
 		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidStart, object: item)
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didPopulatedInterruptedTasks items: [JuggernautItem]) {
+	func juggernaut(_ juggernaut: Juggernaut, didPopulatedInterruptedTasks items: [JuggernautItem], objects: [Any]?) {
 
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didUpdateProgress item: JuggernautItem, forItemAt indexPath: IndexPath) {
+	func juggernaut(_ juggernaut: Juggernaut, didUpdateProgress item: JuggernautItem, forItemAt indexPath: IndexPath, objects: [Any]?) {
 
 		DispatchQueue.main.async {
 
@@ -131,7 +128,7 @@ extension ItemsViewController: JuggernautDelegate {
 		}
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didPaused item: JuggernautItem, forItemAt indexPath: IndexPath) {
+	func juggernaut(_ juggernaut: Juggernaut, didPaused item: JuggernautItem, forItemAt indexPath: IndexPath, objects: [Any]?) {
 
 		DispatchQueue.main.async {
 
@@ -140,7 +137,7 @@ extension ItemsViewController: JuggernautDelegate {
 		}
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didResume item: JuggernautItem, forItemAt indexPath: IndexPath) {
+	func juggernaut(_ juggernaut: Juggernaut, didResume item: JuggernautItem, forItemAt indexPath: IndexPath, objects: [Any]?) {
 
 		DispatchQueue.main.async {
 
@@ -149,18 +146,14 @@ extension ItemsViewController: JuggernautDelegate {
 		}
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didFinish item: JuggernautItem, forItemAt indexPath: IndexPath) {
+	func juggernaut(_ juggernaut: Juggernaut, didFinish item: JuggernautItem, forItemAt indexPath: IndexPath, objects: [Any]?) {
 
 		let docDirectoryPath = fileManager.documentDirectory() + item.name
 		NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFinish, object: docDirectoryPath)
 	}
 
-	func juggernaut(_ juggernaut: Juggernaut, didFail item: JuggernautItem, forItemAt indexPath: IndexPath, with error: NSError) {
+	func juggernaut(_ juggernaut: Juggernaut, didFail item: JuggernautItem, forItemAt indexPath: IndexPath, with error: NSError, objects: [Any]?) {
 
-		DispatchQueue.main.async {
-
-			self.refresh(item, atIndexPath: indexPath)
-			NotificationCenter.default.post(name: NSNotification.Name.JuggernautDidFail, object: item)
-		}
+		print("didFail error \(error.localizedDescription)")
 	}
 }
