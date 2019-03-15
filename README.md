@@ -21,11 +21,11 @@ Download manager
 
 * General scheme
 
-<img width="588" alt="2019-02-08 14 41 42" src="https://user-images.githubusercontent.com/4906243/52476469-c66fd600-2baf-11e9-828e-15373cdc9e7b.png">
+<img width="527" alt="Снимок экрана 2019-03-15 в 3 39 46" src="https://user-images.githubusercontent.com/4906243/54400467-0b69b980-46d4-11e9-8a9b-1cc156732b17.png">
 
 * Delegates
 
-<img width="766" alt="2019-02-08 14 41 14" src="https://user-images.githubusercontent.com/4906243/52476498-dc7d9680-2baf-11e9-9e3a-e2fc58251115.png">
+<img width="686" alt="Снимок экрана 2019-03-15 в 3 37 20" src="https://user-images.githubusercontent.com/4906243/54400443-e1b09280-46d3-11e9-869e-60cc9e7f7411.png">
 
 * Entity
 
