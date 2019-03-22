@@ -50,9 +50,9 @@ pod 'Juggernaut'
 
 Beslan Tularov | <a href="url"><img src="https://user-images.githubusercontent.com/4906243/54856729-037dcb00-4d0d-11e9-9d6f-8a5b8e316ff8.png" height="15"> </a> [@JiromTomson](https://twitter.com/JiromTomson)
 
-[![github@2x](https://user-images.githubusercontent.com/4906243/54857819-5efe8780-4d12-11e9-8100-bce42594f8a3.png)](https://github.com/tularovbeslan)
+<a href="url"><img src="https://user-images.githubusercontent.com/4906243/54857819-5efe8780-4d12-11e9-8100-bce42594f8a3.png" height="32" width="121"> </a> [@JiromTomson](https://github.com/tularovbeslan)
 
-[![twitter@2x](https://user-images.githubusercontent.com/4906243/54857820-5efe8780-4d12-11e9-8a91-4a8e85b89130.png)](https://twitter.com/JiromTomson)
+<a href="url"><img src="https://user-images.githubusercontent.com/4906243/54857820-5efe8780-4d12-11e9-8a91-4a8e85b89130.png" height="32" width="121"> </a> [@JiromTomson](https://twitter.com/JiromTomson)
 
 ## License
 
