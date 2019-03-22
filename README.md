@@ -48,7 +48,7 @@ pod 'Juggernaut'
 
 # Author
 
-Beslan Tularov | <a href="url"><img src="./Resources/twitterIcon.png" height="17"></a> [@JiromTomson](https://twitter.com/JiromTomson)
+Beslan Tularov | <a href="url">![twitterIcon](https://user-images.githubusercontent.com/4906243/54856729-037dcb00-4d0d-11e9-9d6f-8a5b8e316ff8.png)</a> [@JiromTomson](https://twitter.com/JiromTomson)
 
 ## License
 
