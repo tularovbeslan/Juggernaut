@@ -160,11 +160,13 @@ extension Juggernaut: URLSessionDownloadDelegate {
 					item.speed = (size, unit as String)
 					item.progress = progress
 
-					if self.items.contains(item), let objectIndex = self.items.index(of: item) {
+					if self.items.contains(item), let objectIndex = self.items.firstIndex(of: item) {
 						self.items[objectIndex] = item
 					}
 
-					self.delegate?.juggernaut?(self, didUpdateProgress: item, forItemAt: item.indexPath, objects: item.objects)
+					if item.indexPath != nil {
+						self.delegate?.juggernaut?(self, didUpdateProgress: item, forItemAt: item.indexPath, objects: item.objects)
+					}
 				})
 				break
 			}
@@ -191,17 +193,23 @@ extension Juggernaut: URLSessionDownloadDelegate {
 					} catch let error as NSError {
 
 						DispatchQueue.main.async(execute: { () -> Void in
-							self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+							if item.indexPath != nil {
+								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+							}
 						})
 					}
 				} else {
 
 					if let _ = self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath, objects: item.objects) {
-						self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath, objects: item.objects)
+						if item.indexPath != nil {
+							self.delegate?.juggernaut?(self, notExist: location, forItem: item, at: item.indexPath, objects: item.objects)
+						}
 					} else {
 
 						let error = NSError(domain: "FolderDoesNotExist", code: 404, userInfo: [NSLocalizedDescriptionKey : "Destination folder does not exists"])
-						self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+						if item.indexPath != nil {
+							self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+						}
 					}
 				}
 
@@ -256,11 +264,14 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items.remove(at: index)
 
 							if err == nil {
-								self.delegate?.juggernaut?(self, didFinish: item, forItemAt: item.indexPath, objects: item.objects)
+								if item.indexPath != nil {
+									self.delegate?.juggernaut?(self, didFinish: item, forItemAt: item.indexPath, objects: item.objects)
+								}
 							} else {
-								self.delegate?.juggernaut?(self, didCancel: item, forItemAt: item.indexPath, objects: item.objects)
+								if item.indexPath != nil {
+									self.delegate?.juggernaut?(self, didCancel: item, forItemAt: item.indexPath, objects: item.objects)
+								}
 							}
-
 						} else {
 
 							let resumeData = err?.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
@@ -279,11 +290,15 @@ extension Juggernaut: URLSessionDownloadDelegate {
 							self.items[index] = item
 
 							if let error = err {
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+								if item.indexPath != nil {
+									self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+								}
 							} else {
 
 								let error: NSError = NSError(domain: "JuggernautDownloadManagerDomain", code: 1000, userInfo: [NSLocalizedDescriptionKey : "Unknown error occurred"])
-								self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+								if item.indexPath != nil {
+									self.delegate?.juggernaut?(self, didFail: item, forItemAt: item.indexPath, with: error, objects: item.objects)
+								}
 							}
 						}
 						break;
@@ -320,7 +335,10 @@ extension Juggernaut {
 		item.task = task
 		item.objects = objects
 		items.append(item)
-		delegate?.juggernaut?(self, didStart: item, forItemAt: item.indexPath, objects: item.objects)
+
+		if item.indexPath != nil {
+			delegate?.juggernaut?(self, didStart: item, forItemAt: item.indexPath, objects: item.objects)
+		}
 	}
 
 	public func addDownloadTask(_ name: String, fileURL url: URL, path: String, indexPath: IndexPath, objects: [Any]? = nil) {
@@ -349,7 +367,9 @@ extension Juggernaut {
 		item.initialTime = Date()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didPaused: item, forItemAt: item.indexPath, objects: item.objects)
+		if item.indexPath != nil {
+			delegate?.juggernaut?(self, didPaused: item, forItemAt: item.indexPath, objects: item.objects)
+		}
 	}
 
 	public func resumeDownloadTaskAtIndex(_ index: Int) {
@@ -363,7 +383,9 @@ extension Juggernaut {
 		item.status = JuggernautItemStatus.downloading.description()
 		items[index] = item
 
-		delegate?.juggernaut?(self, didResume: item, forItemAt: item.indexPath, objects: item.objects)
+		if item.indexPath != nil {
+			delegate?.juggernaut?(self, didResume: item, forItemAt: item.indexPath, objects: item.objects)
+		}
 	}
 
 	public func retryDownloadTaskAtIndex(_ index: Int) {

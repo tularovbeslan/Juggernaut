@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Juggernaut'
-  s.version          = '2.0.0'
+  s.version          = '2.1.0'
   s.summary          = 'Download manager - Juggernaut'
 
   s.description      = <<-DESC
@@ -9,20 +9,13 @@ Pod::Spec.new do |s|
                        DESC
 
   s.homepage         = 'https://github.com/tularovbeslan/Juggernaut'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'tularovbeslan@gmail.com' => 'tularovbeslan@gmail.com' }
   s.source           = { :git => 'https://github.com/tularovbeslan/Juggernaut.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/JiromTomson'
-  s.swift_version = '4.2'
+  s.swift_version = '5'
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'Juggernaut/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'Juggernaut' => ['Juggernaut/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-   s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit'
 end

@@ -100,7 +100,12 @@ extension ItemsViewController: UITableViewDelegate {
 		guard let url = URL(string: item.url) else { return }
 		let name = fileManager.uniqueName(url)
 		let path = fileManager.documentDirectory() + "/My Files"
-		juggernaut.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath, objects: nil)
+		if juggernaut.items.contains(where: { $0.url == url.absoluteString }) {
+			guard let index = juggernaut.items.firstIndex(where: { $0.path == path }) else { return }
+			juggernaut.cancelTaskAtIndex(index)
+		} else {
+			juggernaut.addDownloadTask(name, fileURL: url, path: path, indexPath: indexPath, objects: nil)
+		}
 	}
 }
 
