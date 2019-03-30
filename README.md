@@ -1,7 +1,9 @@
 ![jug](https://user-images.githubusercontent.com/4906243/52402027-3f99fb00-2ad4-11e9-9d9f-2ce05ca557d8.png)
 
-[![CI Status](https://travis-ci.org/tularovbeslan/Juggernaut.svg?branch=master)](https://travis-ci.org/tularovbeslan/Juggernaut.svg?branch=master)
+[![CI Status](https://travis-ci.org/tularovbeslan/Juggernaut.svg?branch=master)](https://travis-ci.org/tularovbeslan/Juggernaut)
 [![Version](https://img.shields.io/cocoapods/v/Juggernaut.svg?style=flat)](https://cocoapods.org/pods/Juggernaut)
+![iOS 10.0+](https://img.shields.io/badge/iOS-10.0%2B-blue.svg)
+![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg)
 [![License](https://img.shields.io/cocoapods/l/Juggernaut.svg?style=flat)](https://cocoapods.org/pods/Juggernaut)
 [![Platform](https://img.shields.io/cocoapods/p/Juggernaut.svg?style=flat)](https://cocoapods.org/pods/Juggernaut)
 
